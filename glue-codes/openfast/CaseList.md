@@ -27,3 +27,4 @@ SWRT_YFree_VS_WTurb
 5MW_Land_BD_Linear
 Ideal_Beam_Fixed_Free_Linear
 Ideal_Beam_Free_Free_Linear
+DICE_EXTRA_TEST_5MW_OC3Spar_DLL_WTurb_WavesIrr  
