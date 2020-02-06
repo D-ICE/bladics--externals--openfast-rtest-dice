@@ -117,7 +117,7 @@ CHARACTER(SIZE(avcOUTNAME)-1):: RootName                                        
 CHARACTER(SIZE(avcMSG)-1)    :: ErrMsg                                          ! a Fortran version of the C string argument (not considered an array here) [subtract 1 for the C null-character] 
 
 INTEGER(4), PARAMETER        :: UnER          = 89                              ! I/O unit for the log of extra records
-INTEGER(4), PARAMETER        :: N_EXTRA_RECORDS = 10                             ! Number of extra records after generator speed look-up table
+INTEGER(4), PARAMETER        :: N_EXTRA_RECORDS = 24                             ! Number of extra records after generator speed look-up table
 INTEGER(4)                   :: R                                               ! Start of below-rated torque-speed look-up table (record no.)
 INTEGER(4)                   :: NumTrq                                          ! No. of points in torque-speed look-up table (-)
 REAL(4)                      :: PtfmPitch                                       ! Extra record 0: Platform pitch angle
@@ -132,6 +132,18 @@ REAL(4)                      :: PtfmRAzt                                        
 REAL(4)                      :: PtfmSway                                       ! Extra record 9: Platform sway displacement
 REAL(4)                      :: PtfmSurge                                       ! Extra record 10: Platform surge displacement
 REAL(4)                      :: PtfmHeave                                       ! Extra record 11: Platform heave displacement
+REAL(4)                      :: PtfmTVyi                                       ! Extra record 12: Platform sway velocity
+REAL(4)                      :: PtfmTVxi                                       ! Extra record 13: Platform surge velocity
+REAL(4)                      :: PtfmTVzi                                       ! Extra record 14: Platform heave velocity
+REAL(4)                      :: PtfmTAyi                                       ! Extra record 15: Platform sway acceleration
+REAL(4)                      :: PtfmTAxi                                       ! Extra record 16: Platform surge acceleration
+REAL(4)                      :: PtfmTAzi                                       ! Extra record 17: Platform heave acceleration
+REAL(4)                      :: YawBrRDyp                                       ! Extra record 18: Tower-top pitch position
+REAL(4)                      :: YawBrRDxp                                       ! Extra record 19: Tower-top roll position
+REAL(4)                      :: YawBrRDzp                                       ! Extra record 20: Tower-top torsion position
+REAL(4)                      :: YawBrRVyp                                       ! Extra record 21: Tower-top pitch velocity
+REAL(4)                      :: YawBrRVxp                                       ! Extra record 22: Tower-top roll velocity
+REAL(4)                      :: YawBrRVzp                                       ! Extra record 23: Tower-top torsion velocity
 
 
    ! Load variables from calling program (See Appendix A of Bladed User's Guide):
@@ -161,6 +173,18 @@ PtfmRAzt     =       avrSWAP(R + 2*NumTrq + 8)
 PtfmSway     =       avrSWAP(R + 2*NumTrq + 9)
 PtfmSurge    =       avrSWAP(R + 2*NumTrq + 10)
 PtfmHeave    =       avrSWAP(R + 2*NumTrq + 11)
+PtfmTVyi     =       avrSWAP(R + 2*NumTrq + 12)
+PtfmTVxi     =       avrSWAP(R + 2*NumTrq + 13)
+PtfmTVzi     =       avrSWAP(R + 2*NumTrq + 14)
+PtfmTAyi     =       avrSWAP(R + 2*NumTrq + 15)
+PtfmTAxi     =       avrSWAP(R + 2*NumTrq + 16)
+PtfmTAzi     =       avrSWAP(R + 2*NumTrq + 17)
+YawBrRDyp    =       avrSWAP(R + 2*NumTrq + 18)
+YawBrRDxp    =       avrSWAP(R + 2*NumTrq + 19)
+YawBrRDzp    =       avrSWAP(R + 2*NumTrq + 20)
+YawBrRVyp    =       avrSWAP(R + 2*NumTrq + 21)
+YawBrRVxp    =       avrSWAP(R + 2*NumTrq + 22)
+YawBrRVzp    =       avrSWAP(R + 2*NumTrq + 23)
 
 IF ( iStatus == 0 ) THEN
    ! Start of simulation : open text file in write mode. It will be located in the execution folder.
@@ -170,14 +194,14 @@ IF ( iStatus == 0 ) THEN
       ErrMsg  = ' Cannot open file extra_records.csv. Another program may have locked.'
    ELSE
       ! Write header.
-      WRITE (UnER, '(A)')  'Time'//Tab//'PtfmPitch'//Tab//'PtfmRVyt'//Tab//'PtfmRAyt'//Tab//'PtfmRoll'//Tab//'PtfmRVxt'//Tab//'PtfmRAxt'//Tab//'PtfmYaw'//Tab//'PtfmRVzt'//Tab//'PtfmRAzt'//Tab//'PtfmSway'//Tab//'PtfmSurge'//Tab//'PtfmHeave'
-      WRITE (UnER, '(A)')  '(s)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(m)'//Tab//'(m)'//Tab//'(m)'
+      WRITE (UnER, '(A)')  'Time'//Tab//'PtfmPitch'//Tab//'PtfmRVyt'//Tab//'PtfmRAyt'//Tab//'PtfmRoll'//Tab//'PtfmRVxt'//Tab//'PtfmRAxt'//Tab//'PtfmYaw'//Tab//'PtfmRVzt'//Tab//'PtfmRAzt'//Tab//'PtfmSway'//Tab//'PtfmSurge'//Tab//'PtfmHeave'//Tab//'PtfmTVyi'//Tab//'PtfmTVxi'//Tab//'PtfmTVzi'//Tab//'PtfmTAyi'//Tab//'PtfmTAxi'//Tab//'PtfmTAzi'//Tab//'YawBrRDyp'//Tab//'YawBrRDxp'//Tab//'YawBrRDzp'//Tab//'YawBrRVyp'//Tab//'YawBrRVxp'//Tab//'YawBrRVzp'
+      WRITE (UnER, '(A)')  '(s)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s^2)'//Tab//'(m)'//Tab//'(m)'//Tab//'(m)'//Tab//'(m/s)'//Tab//'(m/s)'//Tab//'(m/s)'//Tab//'(m/s^2)'//Tab//'(m/s^2)'//Tab//'(m/s^2)'//Tab//'(rad)'//Tab//'(rad)'//Tab//'(rad)'//Tab//'(rad/s)'//Tab//'(rad/s)'//Tab//'(rad/s)'
    ENDIF
 ENDIF
 
 IF ( ( iStatus >= 0 ) .AND. ( aviFAIL >= 0 ) ) THEN
    ! Write values of extra fields
-   WRITE(UnER, FmtDat) Time, PtfmPitch, PtfmRVyt, PtfmRAyt, PtfmRoll, PtfmRVxt, PtfmRAxt, PtfmYaw, PtfmRVzt, PtfmRAzt, PtfmSway, PtfmSurge, PtfmHeave
+   WRITE(UnER, FmtDat) Time, PtfmPitch, PtfmRVyt, PtfmRAyt, PtfmRoll, PtfmRVxt, PtfmRAxt, PtfmYaw, PtfmRVzt, PtfmRAzt, PtfmSway, PtfmSurge, PtfmHeave, PtfmTVyi, PtfmTVxi, PtfmTVzi, PtfmTAyi, PtfmTAxi, PtfmTAzi, YawBrRDyp, YawBrRDxp, YawBrRDzp, YawBrRVyp, YawBrRVxp, YawBrRVzp
 ELSE
    ! End of simulation : close text file.
    CLOSE(UnER)
