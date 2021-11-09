@@ -32,3 +32,5 @@ Ideal_Beam_Free_Free_Linear
 HelicalWake_OLAF
 EllipticalWing_OLAF
 IEA_LB_RWT-AeroAcoustics
+DICE_EXTRA_TEST_5MW_OC3Spar_DLL_WTurb_WavesIrr
+
