@@ -47,7 +47,7 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
           0   HSSBrMode    - HSS brake model {0: none, 1: simple, 3: user-defined from routine UserHSSBr, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
      9999.9   THSSBrDp     - Time to initiate deployment of the HSS brake (s)
         0.6   HSSBrDT      - Time for HSS-brake to reach full deployment once initiated (sec) [used only when HSSBrMode=1]
-    28116.2   HSSBrTqF     - Fully deployed HSS-brake torque (N-m) [unused when HSSBrMode=5]
+    28116.2   HSSBrTqF     - Fully deployed HSS-brake torque (N-m)
 ---------------------- NACELLE-YAW CONTROL -------------------------------------
           0   YCMode       - Yaw control mode {0: none, 3: user-defined from routine UserYawCont, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
      9999.9   TYCOn        - Time to enable active yaw control (s) [unused when YCMode=0]
@@ -68,7 +68,7 @@ False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
 "DISCON"      DLL_ProcName - Name of procedure in DLL to be called (-) [case sensitive; used only with DLL Interface]
 "default"     DLL_DT       - Communication interval for dynamic library (s) (or "default") [used only with Bladed Interface]
 false         DLL_Ramp     - Whether a linear ramp should be used between DLL_DT time steps [introduces time shift when true] (flag) [used only with Bladed Interface]
-     9999.9   BPCutoff     - Cuttoff frequency for low-pass filter on blade pitch from DLL (Hz) [used only with Bladed Interface]
+     9999.9   BPCutoff     - Cutoff frequency for low-pass filter on blade pitch from DLL (Hz) [used only with Bladed Interface]
           0   NacYaw_North - Reference yaw angle of the nacelle when the upwind end points due North (deg) [used only with Bladed Interface]
           0   Ptch_Cntrl   - Record 28: Use individual pitch control {0: collective pitch; 1: individual pitch control} (switch) [used only with Bladed Interface]
           0   Ptch_SetPnt  - Record  5: Below-rated pitch angle set-point (deg) [used only with Bladed Interface]
